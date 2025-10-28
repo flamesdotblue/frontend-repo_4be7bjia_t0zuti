@@ -1,26 +1,30 @@
 import { useState } from 'react'
+import Header from './components/Header'
+import SchemaDesigner from './components/SchemaDesigner'
+import SchemaPreview from './components/SchemaPreview'
+import AstInsights from './components/AstInsights'
+import ErdVisualizer from './components/ErdVisualizer'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [code, setCode] = useState('')
+  const [model, setModel] = useState({ tables: [], relations: [] })
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-sky-50 to-blue-50">
+      <Header />
+      <main className="max-w-6xl mx-auto px-4 py-6 md:py-10 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <SchemaDesigner onGenerate={({ code }) => setCode(code)} />
+          <SchemaPreview code={code} />
         </div>
-      </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <AstInsights code={code} onModel={setModel} />
+          <ErdVisualizer model={model} />
+        </div>
+      </main>
+      <footer className="text-center text-xs text-gray-500 py-6">
+        Built with love. This demo generates Drizzle schema code, parses it, and visualizes the ERD.
+      </footer>
     </div>
   )
 }
